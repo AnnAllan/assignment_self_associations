@@ -15,19 +15,19 @@ ActiveRecord::Schema.define(version: 20170713195713) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "managers_employees", force: :cascade do |t|
+    t.integer  "manager_id",  null: false
+    t.integer  "employee_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["manager_id", "employee_id"], name: "index_managers_employees_on_manager_id_and_employee_id", unique: true, using: :btree
+  end
+
   create_table "people", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "position"
-  end
-
-  create_table "reportings", force: :cascade do |t|
-    t.integer  "manager_id",  null: false
-    t.integer  "employee_id", null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.index ["manager_id", "employee_id"], name: "index_reportings_on_manager_id_and_employee_id", unique: true, using: :btree
   end
 
 end
