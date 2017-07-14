@@ -199,6 +199,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
   faker
+  hirb
   jazz_fingers
   jbuilder (~> 2.5)
   jquery-rails
