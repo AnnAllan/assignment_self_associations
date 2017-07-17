@@ -1944,3 +1944,28 @@ irb(main):090:0> Person.first.our_employees
 +----+------------+-------------+----------------------+-----------------------+
 1 row in set
 irb(main):091:0> quit
+2.2.4 :016 > Person.where("id = ?", 61).first.destroy
+  Person Load (0.7ms)  SELECT  "people".* FROM "people" WHERE (id = 61) ORDER BY "people"."id" ASC LIMIT $1  [["LIMIT", 1]]
+   (0.2ms)  BEGIN
+  SQL (0.7ms)  UPDATE "manager_employees" SET "manager_id" = NULL WHERE "manager_employees"."manager_id" = $1  [["manager_id", 61]]
+  SQL (0.4ms)  UPDATE "manager_employees" SET "employee_id" = NULL WHERE "manager_employees"."employee_id" = $1  [["employee_id", 61]]
+  SQL (0.3ms)  DELETE FROM "people" WHERE "people"."id" = $1  [["id", 61]]
+   (2.6ms)  COMMIT
++----+------------------+-------------------------+-------------------------+--------------------+
+| id | name             | created_at              | updated_at              | position           |
++----+------------------+-------------------------+-------------------------+--------------------+
+| 61 | Dr. Agustin Bode | 2017-07-16 20:56:04 UTC | 2017-07-16 20:56:04 UTC | Construction Agent |
++----+------------------+-------------------------+-------------------------+--------------------+
+1 row in set
+2.2.4 :017 > ManagerEmployee.all.where("employee_id = ? or manager_id = ?", 61, 61).all
+  ManagerEmployee Load (0.7ms)  SELECT "manager_employees".* FROM "manager_employees" WHERE (employee_id = 61 or manager_id = 61)
+ => #<ActiveRecord::Relation []>
+2.2.4 :018 > ManagerEmployee.all.where("employee_id = ? or manager_id = ?", 68, 68).all
+  ManagerEmployee Load (1.3ms)  SELECT "manager_employees".* FROM "manager_employees" WHERE (employee_id = 68 or manager_id = 68)
++----+------------+-------------+-------------------------+-------------------------+
+| id | manager_id | employee_id | created_at              | updated_at              |
++----+------------+-------------+-------------------------+-------------------------+
+| 47 |            | 68          | 2017-07-16 20:56:04 UTC | 2017-07-16 20:56:04 UTC |
+| 43 | 68         |             | 2017-07-16 20:56:04 UTC | 2017-07-16 20:56:04 UTC |
++----+------------+-------------+-------------------------+-------------------------+
+2 rows in set
